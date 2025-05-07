@@ -4,8 +4,8 @@
   ros__parameters:
     # Spot Login Information
     username: "user"
-    password: "password"
-    hostname: "10.0.0.3"
+    password: "corspotuser1"
+    hostname: "192.168.100.95"
 
     # Status Updates from Spot
     metrics_rate: 0.04
