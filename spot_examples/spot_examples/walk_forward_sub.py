@@ -21,7 +21,7 @@ from spot_msgs.action import RobotCommand  # type: ignore
 
 from .simple_spot_commander import SimpleSpotCommander
 
-ROBOT_T_GOAL = SE2Pose(1.0, 0.0, 0.0)
+ROBOT_T_GOAL = SE2Pose(5.0, 0.0, 0.0)
 
 
 class WalkForward:
@@ -91,6 +91,7 @@ class WalkForward:
             goal_heading=world_t_goal.angle,
             frame_name=VISION_FRAME_NAME,
         )
+
         action_goal = RobotCommand.Goal()
         convert(proto_goal, action_goal.command)
         self._robot_command_client.send_goal_and_wait("walk_forward", action_goal)

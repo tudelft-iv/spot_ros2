@@ -28,6 +28,7 @@ setup(
             "wasd = spot_examples.wasd:main",
             "simple_sub = spot_examples.simple_sub:main",
             "spot_in_circle = spot_examples.spot_in_circle:main",
+            "walk_forward_sub = spot_examples.walk_forward_sub:main"
         ],
     },
 )

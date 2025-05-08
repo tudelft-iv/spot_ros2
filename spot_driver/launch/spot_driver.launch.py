@@ -10,6 +10,8 @@ from launch.substitutions import Command, FindExecutable, LaunchConfiguration, P
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from synchros2.launch.actions import DeclareBooleanLaunchArgument, convert_to_bool
+from ament_index_python.packages import get_package_share_directory
+
 
 from spot_common.launch.spot_launch_helpers import (
     IMAGE_PUBLISHER_ARGS,
@@ -20,7 +22,6 @@ from spot_common.launch.spot_launch_helpers import (
 )
 
 THIS_PACKAGE = "spot_driver"
-
 
 def launch_setup(context: LaunchContext, ld: LaunchDescription) -> None:
     config_file = LaunchConfiguration("config_file")
@@ -198,12 +199,14 @@ def launch_setup(context: LaunchContext, ld: LaunchDescription) -> None:
 
 
 def generate_launch_description() -> LaunchDescription:
+    default_driver_param_path = os.path.join(get_package_share_directory(THIS_PACKAGE), "config", "spot_ros_example.yaml")
+
     launch_args = []
 
     launch_args.append(
         DeclareLaunchArgument(
             "config_file",
-            default_value="",
+            default_value=default_driver_param_path,
             description="Path to configuration file for the driver.",
         )
     )
