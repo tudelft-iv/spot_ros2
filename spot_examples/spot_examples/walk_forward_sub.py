@@ -12,6 +12,7 @@ from bosdyn_msgs.conversions import convert
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from std_msgs.msg import Bool
+from geometry_msgs.msg import Twist
 
 from synchros2.action_client import ActionClientWrapper
 from synchros2.tf_listener_wrapper import TFListenerWrapper
@@ -22,6 +23,10 @@ from spot_msgs.action import RobotCommand  # type: ignore
 from .simple_spot_commander import SimpleSpotCommander
 
 ROBOT_T_GOAL = SE2Pose(5.0, 0.0, 0.0)
+VELOCITY_CMD_DURATION  = 10.0
+VELOCITY_X = 0.5
+VELOCITY_Y = 0.0
+VELOCITY_ROT = 0.0
 
 
 class WalkForward:
@@ -47,6 +52,8 @@ class WalkForward:
         self._subscription = self._node.create_subscription(
             Bool, "/spot_mv", self.on_spot_mv, qos_profile
         )
+        self.pub_cmd_vel = self._node.create_publisher(Twist, namespace_with(self._robot_name, "cmd_vel"), 1)
+
 
     def initialize_robot(self) -> bool:
         self._logger.info(f"Robot name: {self._robot_name}")
@@ -100,7 +107,21 @@ class WalkForward:
     def on_spot_mv(self, msg: Bool) -> None:
         if msg.data:
             self._logger.info("Received move command on /spot_mv")
-            self.walk_forward_with_world_frame_goal()
+            self.move_forward_x_seconds()
+
+    def move_forward_x_seconds(self) -> None:
+        self._logger.info(f"Moving forward for {VELOCITY_CMD_DURATION} seconds")
+        # Implement the logic to move the robot forward for the specified duration
+        twist = Twist()
+        twist.linear.x = VELOCITY_X
+        twist.linear.y = VELOCITY_Y
+        twist.angular.z = VELOCITY_ROT
+        start_time = time.time()
+        while time.time() - start_time < VELOCITY_CMD_DURATION:
+            self.pub_cmd_vel.publish(twist)
+            time.sleep(0.01)
+        self.pub_cmd_vel.publish(Twist())
+
 
 
 def cli() -> argparse.ArgumentParser:
