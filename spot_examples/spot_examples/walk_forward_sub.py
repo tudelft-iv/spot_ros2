@@ -24,7 +24,7 @@ from .simple_spot_commander import SimpleSpotCommander
 
 ROBOT_T_GOAL = SE2Pose(5.0, 0.0, 0.0)
 VELOCITY_CMD_DURATION  = 10.0
-VELOCITY_X = 0.5
+VELOCITY_X = 0.6
 VELOCITY_Y = 0.0
 VELOCITY_ROT = 0.0
 
@@ -119,7 +119,7 @@ class WalkForward:
         start_time = time.time()
         while time.time() - start_time < VELOCITY_CMD_DURATION:
             self.pub_cmd_vel.publish(twist)
-            time.sleep(0.01)
+            time.sleep(0.05)
         self.pub_cmd_vel.publish(Twist())
 
 
@@ -134,12 +134,10 @@ def cli() -> argparse.ArgumentParser:
 def main(args: argparse.Namespace) -> int:
     walker = WalkForward(args.robot, main.node)
     walker.initialize_robot()
-    try:
-        while rclpy.ok():
-            time.sleep(0.1)
-    except KeyboardInterrupt:
-        pass
-
+    rclpy.spin(main.node)
+    main.node.destroy_node()
+    rclpy.shutdown()
+    main.logger.info("Shutting down")
     return 0
 
 
