@@ -28,7 +28,7 @@
     spot_name: ""
     # frame_prefix: "" # Set an explicit prefix for all frames in your TF tree (an empty string is a valid prefix option).
 
-    cmd_duration: 0.25 # The duration of cmd_vel commands. Increase this if spot stutters when publishing cmd_vel.
+    cmd_duration: 0.5 # The duration of cmd_vel commands. Increase this if spot stutters when publishing cmd_vel.
     rgb_cameras: True  # Set to False if your robot has greyscale cameras -- otherwise you won't receive data.
     initialize_spot_cam: False # Set to True if you are connecting to a SpotCam payload module.
 

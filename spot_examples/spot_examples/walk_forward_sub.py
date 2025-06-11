@@ -23,8 +23,8 @@ from spot_msgs.action import RobotCommand  # type: ignore
 from .simple_spot_commander import SimpleSpotCommander
 
 ROBOT_T_GOAL = SE2Pose(5.0, 0.0, 0.0)
-VELOCITY_CMD_DURATION  = 10.0
-VELOCITY_X = 0.6
+VELOCITY_CMD_DURATION  = 14.0
+VELOCITY_X = 0.5
 VELOCITY_Y = 0.0
 VELOCITY_ROT = 0.0
 
@@ -119,7 +119,7 @@ class WalkForward:
         start_time = time.time()
         while time.time() - start_time < VELOCITY_CMD_DURATION:
             self.pub_cmd_vel.publish(twist)
-            time.sleep(0.05)
+            time.sleep(0.25)
         self.pub_cmd_vel.publish(Twist())
 
 
